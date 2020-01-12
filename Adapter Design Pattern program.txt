@@ -1,0 +1,60 @@
+#include <iostream>
+
+using namespace std;
+
+// cPaser Interface 
+class Iparser {
+public:
+  void virtual parser(){}
+  void virtual parse(){}
+};
+// Concrete class 
+class cPaser : public Iparser {
+public:
+  void parser() {
+    cout << " Class :cPaser-Fun :parser , I am parser " << endl;
+  }
+  void parse() {
+    cout << " Class :cPaser-Fun :parse , I am parse " << endl;
+  }
+};
+// Interface for Adaptee
+class IbetterParser {
+public:
+  void virtual parser() {}
+  void virtual firstLevelParse() {}
+};
+// Concrete class Adaptee
+class betterParser : public IbetterParser {
+public:
+  void parser() {
+        cout << " Class: betterParser-Fun: parser , i am Parser " << endl;
+  }
+  void firstLevelParse() {
+        cout << " Class: betterParser-Fun: parse , i am parse " << endl;
+  }
+};
+// Adapter Class Which will simulate the cPaserPin functionality
+class Adapter : public Iparser {
+public:
+  IbetterParser *bParserPtr;
+  Adapter(IbetterParser *obj) {
+        bParserPtr = obj;
+  }
+  void parser() {
+        bParserPtr->parser();
+  }
+  void parse() {
+        bParserPtr->firstLevelParse();
+  }
+};
+// Client code
+int  main()
+{
+  betterParser *betterParserPtr = new betterParser; 
+  Iparser *adapter = new Adapter(betterParserPtr);
+  adapter->parser();
+  adapter->parse();
+  
+  return 0;
+}

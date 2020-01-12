@@ -1,0 +1,62 @@
+#include <iostream>
+
+using namespace std;
+
+class Singleton
+{
+private:
+    static bool objCheckInd;
+    static Singleton *single;
+    int i;
+    Singleton()
+    {
+        cout<<"\n Private Singleton constructor"<< endl;
+    }
+	Singleton(const Singleton&)
+    {
+        cout<<"\n Private copy constructor"<< endl;
+    }
+
+    Singleton &operator=(Singleton&)
+    {
+        cout<<"\n Private Assignment Operator"<< endl;
+    }
+public:
+    static Singleton* getInstance()
+	{
+	    if(! objCheckInd)
+        {
+        single = new Singleton();
+        objCheckInd = true;
+        return single;
+        }
+        else
+        {
+        return single;
+        }
+	}
+    void method()
+	{
+	    i = i+1;
+        cout << "Method of the singleton class : " << i << endl;
+	}
+    ~Singleton()
+    {
+        objCheckInd = false;
+    }
+};
+
+bool Singleton::objCheckInd = false;
+Singleton* Singleton::single = NULL;
+
+
+int main()
+{
+    Singleton *SinglePtr1,*SinglePtr2;
+    SinglePtr1 = Singleton::getInstance();
+    SinglePtr1->method();
+    SinglePtr2 = Singleton::getInstance();
+    SinglePtr2->method();
+
+    return 0;
+}

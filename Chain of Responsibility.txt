@@ -1,0 +1,196 @@
+#include <iostream>
+
+using namespace std;
+
+class billAmountTracker 
+{ 
+    private:
+	int billAmount; 
+  
+    public:
+	billAmountTracker(int bill_Amount) 
+    { 
+        this->billAmount = bill_Amount; 
+    } 
+
+	int getbillAmountTracker() 
+    { 
+        return billAmount; 
+    } 
+  
+} ;
+
+class  billApprovalChain 
+{ 
+    public :
+	virtual void setNext(billApprovalChain *nextBillApproverObj) = 0; 
+    virtual void billProcessor(billAmountTracker *requestedAmount) = 0; 
+}; 
+
+class noramlCSRProcessor : public billApprovalChain 
+{ 
+    private :
+	billApprovalChain *nextBillApproverObj; 
+  
+    public:
+    void setNext(billApprovalChain *obj) 
+    { 
+        nextBillApproverObj = obj; 
+    } 
+  
+    void billProcessor(billAmountTracker *request) 
+    { 
+        if (request->getbillAmountTracker() < 10) 
+        { 
+            cout<<"CSR processing Amount $"<< request->getbillAmountTracker()<<endl; 
+        } 
+        else
+        { 
+            nextBillApproverObj->billProcessor(request); 
+        } 
+    } 
+}; 
+
+
+class supervisorCSRProcessor : public billApprovalChain 
+{ 
+    private :
+	billApprovalChain *nextBillApproverObj; 
+  
+    public:
+    void setNext(billApprovalChain *obj) 
+    { 
+        nextBillApproverObj = obj; 
+    } 
+  
+    void billProcessor(billAmountTracker *request) 
+    { 
+        if (request->getbillAmountTracker() < 100) 
+        { 
+            cout<<"Supervisor processing Amount $"<< request->getbillAmountTracker()<<endl; 
+        } 
+        else
+        { 
+            nextBillApproverObj->billProcessor(request); 
+        } 
+    } 
+};
+
+class SeniorSupervisorCSRProcessor : public billApprovalChain 
+{ 
+    private :
+	billApprovalChain *nextBillApproverObj; 
+  
+    public:
+    void setNext(billApprovalChain *obj) 
+    { 
+        nextBillApproverObj = obj; 
+    } 
+  
+    void billProcessor(billAmountTracker *request) 
+    { 
+        if (request->getbillAmountTracker() > 100) 
+        { 
+            cout<<"Senior Supervisor processing Amount $"<< request->getbillAmountTracker()<<endl; 
+        } 
+        else
+        { 
+            cout<<"No one is here to handle"<<endl;
+        } 
+    } 
+}; 
+int main()
+{
+     billApprovalChain *normalObj = new noramlCSRProcessor();
+     billApprovalChain *supervisorObj = new supervisorCSRProcessor();
+     billApprovalChain *SeniorSupervisorObj = new SeniorSupervisorCSRProcessor();
+    
+     normalObj->setNext(supervisorObj);
+     supervisorObj->setNext(SeniorSupervisorObj);
+     
+     billAmountTracker *billAmountTrackerObj = new billAmountTracker(90);
+     normalObj->billProcessor(billAmountTrackerObj);
+    
+    
+   cout << "Anount  $" <<billAmountTrackerObj->getbillAmountTracker()<<" has been processed"<<endl; 
+   
+   return 0;
+}
+
+
+
+Tutorial#13 chain of responsibility design pattern with real time example
+https://youtu.be/TqjSYasltac
+#Designpattern  
+
+Tutorial on chain of responsibility design pattern with real time example which will be in C++ , 
+in this tutorial you will understand when to use chain of responsibility pattern , What is the chain of responsibility design pattern , chain of responsibility design pattern example
+
+Assignment Link: will be available soon
+
+oracle SQL Complete Tutorial/Training/Course for the beginner:
+https://www.youtube.com/watch?v=3v4s3XMw4q0&list=PLiLpmqwkwkCt0QeXD8j7BwIoOaBGBRrZC
+
+PlayList On Design Pattern :
+https://www.youtube.com/watch?v=8tbxQ2IUtvE&list=PLiLpmqwkwkCsgR__zwKVB0s4bIYrF8vWu
+
+observer Design Pattern:
+https://youtu.be/sRPcWQc7kIE
+
+Command Design Pattern :
+https://youtu.be/uGM_-WW2SGU
+
+visit : http://www.equalconnect.com/
+
+follow me on:
+Facebook Page:
+https://www.facebook.com/LrnWthr-319371861902642/?ref=bookmarks
+
+Contacts Email:
+Rakeshchannel17@gmail.com
+
+Instagram:
+https://www.instagram.com/equalconnect/
+
+Twitter:
+https://twitter.com/LrnWthR
+
+when to use chain of responsibility pattern
+chain of responsibility vs command pattern
+chain of responsibility design pattern example
+chain of responsibility design pattern c++
+chain of responsibility design pattern real life example
+chain of responsibility design pattern tutorials
+Design pattern tutorial
+C++ Design pattern
+GOF / Gang of Four Design Patterns in C++
+top 10 design pattern
+Behavioral Design Patterns in C++
+What is the chain of responsibility design pattern
+chain of responsibility design pattern concept
+
+software design pattern in C++
+
+
+design pattern in C++
+Defination:
+The  chain-of-responsibility  pattern  is  a  design  pattern  consisting  of  
+command/request  and  a  series  of  processing  objects (handler). In  
+which  request  passed  to processing  object,  Upon  receiving  a  request,  
+each  handler  decides  either  to  process  the  request  or  to  pass  it  
+to  the  next handler  in  the  chain
+
+That is nothing but Chain of responsibility  and it comes under behavioral design pattern
+
+Advantages:
+1) It  reduces  the  coupling
+2) It  gives  flexibility  while  assigning  the  responsibilities  to  objects
+3) It  allows  to  pass  request  to  another  object  in  case  current  object  can't  handler
+
+Disadvantages
+1) Some  requests  may  end  up  unhandled
+
+When to use:
+1) When you don’t want to specify handlers explicitly in your code
+2) When you want to issue a request to one of several objects without specifying the receiver explicitly.
+3) When more than one object can handle a request and the handler is unknown
